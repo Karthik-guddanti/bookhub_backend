@@ -12,11 +12,20 @@ export const getAllBooks = async (req, res) => {
   try {
     const filter = {};
 
-    // Example of filtering by author (case-insensitive)
+    // Filter by author (case-insensitive)
     if (req.query.author) {
       filter.author = { $regex: req.query.author, $options: 'i' };
     }
-    // You could add more filters here, e.g., for title or genre
+    
+    // Filter by title (case-insensitive)
+    if (req.query.title) {
+      filter.title = { $regex: req.query.title, $options: 'i' };
+    }
+    
+    // Filter by description (case-insensitive) - this covers "book name" searches
+    if (req.query.description) {
+      filter.description = { $regex: req.query.description, $options: 'i' };
+    }
     
     // Find all books, or find books matching the filter
     const books = await Book.find(filter);
